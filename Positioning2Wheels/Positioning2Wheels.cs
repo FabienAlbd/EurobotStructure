@@ -11,7 +11,7 @@ namespace Positioning2WheelsNS
     public class Positioning2Wheels
     {
         int robotId;
-        Location robotLocation;
+        Location robotLocation = new Location(0,0,0, 0, 0, 0);
         public Positioning2Wheels(int id)
         {
             robotId = id;
@@ -20,6 +20,9 @@ namespace Positioning2WheelsNS
         public void OnOdometryRobotSpeedReceived(object sender, PolarSpeedArgs e)
         {
             /// Ajoutez votre code de calcul de la nouvelle position ici
+            robotLocation.X = robotLocation.X + e.Vx*1/50;
+            robotLocation.Y = robotLocation.Y + e.Vy *1/50;
+            robotLocation.Theta = robotLocation.Theta + e.Vtheta * 1 / 50;
 
             /// Ajoutez l'appel à l'event de transmission de la position calculée ici
             OnCalculatedLocation(robotId, robotLocation);

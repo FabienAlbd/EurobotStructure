@@ -34,7 +34,6 @@ namespace RobotEurobot2Roues
 
         static WpfRobot2RouesInterface interfaceRobot;
         static GameMode competition = GameMode.Eurobot;
-
         static bool usingXBoxController;
 
         static object ExitLock = new object();
@@ -79,7 +78,10 @@ namespace RobotEurobot2Roues
             
             trajectoryGenerator.OnSpeedConsigneEvent += robotMsgGenerator.GenerateMessageSetSpeedConsigneToRobot;           //Transmission des commande de vitesse aux moteurs de déplacement
             strategyManager.OnSetSpeedConsigneToMotorEvent += robotMsgGenerator.GenerateMessageSetSpeedConsigneToMotor;     //Transmission des commande de vitesse (aux moteurs annexes)
-            
+
+            positioning2Wheels.OnCalculatedLocationEvent += localWorldMapManager.OnPhysicalPositionReceived;
+
+
             strategyManager.InitStrategy(); //à faire après avoir abonné les events !
 
             StartRobotInterface();
@@ -159,6 +161,10 @@ namespace RobotEurobot2Roues
 
             /// Affichage des infos en provenance du strategyManager
             strategyManager.OnTextMessageEvent += interfaceRobot.AppendConsole;
+
+            localWorldMapManager.OnLocalWorldMapForDisplayOnlyEvent += interfaceRobot.OnLocalWorldMapStrategyEvent;
+
+
 
 
         }
